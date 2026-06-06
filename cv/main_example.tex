@@ -1,8 +1,7 @@
-%% Example CV - [YOUR_NAME]
+%% Master Reference CV - Nick Davenock
 %% Comprehensive overview of all competencies, experience, and achievements.
 %% Use as a master reference when tailoring role-specific CVs.
 %%
-%% SETUP: Run /setup to populate this with your actual information.
 %% Compile with: lualatex main_example.tex
 %% (pdflatex often fails on modern MiKTeX with fontawesome5 font-expansion errors.)
 
@@ -24,18 +23,18 @@
     linkcolor=blue,
     filecolor=magenta,
     urlcolor=blue,
-    pdftitle={[YOUR_NAME] - CV},
+    pdftitle={Nick Davenock - CV},
     pdfpagemode=FullScreen,
 }
 \usepackage[scale=0.80]{geometry}
 \usepackage{import}
+\usepackage{needspace}
 
 % personal data
-\name{[First]}{[Last]}
-\address{[Your Address, City, Country]}{}{}
-\phone[mobile]{[+XX XXXXXXXXXX]}
-\email{[your.email@example.com]}
-\extrainfo{\href{[https://linkedin.com/in/your-profile]}{LinkedIn}, \href{[https://github.com/your-username]}{GitHub}}
+\name{Nick}{Davenock}
+\address{Courtenay, BC V9N 2E6}{}{}
+\phone[mobile]{+1 236 489 2371}
+\email{nickdavenock@gmail.com}
 
 \begin{document}
 
@@ -46,7 +45,7 @@
 % ============================================================
 
 \vspace{6pt}
-\small{[Write a 3-5 line profile statement tailored to the role you're applying for. Focus on what makes you uniquely qualified. Example: "Data scientist with a PhD in [field] and X years of industry experience. Combines deep domain expertise in [domain] with strong applied machine learning and Python development skills. Experienced in developing end-to-end ML pipelines, from data ingestion to stakeholder-facing dashboards."]}
+\small{Painter and decorator with approximately two years of commercial experience and a strong record of progressive responsibility. Holds WHMIS and Fall Protection certifications with Red Seal apprenticeship in progress. Background in computer science and technical sales brings analytical problem-solving and client communication skills to every project. Known for working independently, co-leading crews, and consistently delivering quality workmanship with minimal supervision.}
 
 % ============================================================
 %     CORE COMPETENCIES
@@ -55,17 +54,11 @@
 \section{Core Competencies}
 \vspace{1pt}
 \begin{itemize}
-
-\item \textbf{[Skill Category 1]}: [Specific skills, frameworks, tools. Be concrete.]
-
-\item \textbf{[Skill Category 2]}: [Specific skills, frameworks, tools.]
-
-\item \textbf{[Skill Category 3]}: [Specific skills, frameworks, tools.]
-
-\item \textbf{[Skill Category 4]}: [Domain expertise, methods, approaches.]
-
-\item \textbf{[Skill Category 5]}: [Tools, platforms, software.]
-
+\item \textbf{Commercial Painting:} Surface preparation, sanding, daxing, taping, priming, rolling, and spraying; interior and exterior work across residential and commercial buildings
+\item \textbf{Wood Finishing:} Detailed staining, sanding, and polishing of exposed wood and structural columns
+\item \textbf{Safety \& Compliance:} WHMIS certified, Fall Protection certified, Red Seal apprenticeship in progress
+\item \textbf{Team Leadership:} Co-led crews of labourers on restoration projects; integral member of small teams with full operational responsibility
+\item \textbf{Technical Skills:} Python, Git, Docker, Linux, HTML5, web design; strong general computer proficiency
 \end{itemize}
 
 % ============================================================
@@ -76,32 +69,71 @@
 \vspace{3pt}
 \begin{itemize}
 
-% --- Most Recent Role ---
-\item{\cventry{[YYYY--Present]}{[Job Title]}{[Company]}{[City, Country]}{}{\vspace{1pt}
+\needspace{5\baselineskip}
+\item{\cventry{2025--Present}{Painter and Decorator}{Trinity Painting}{Courtenay, BC}{}{\vspace{1pt}
 \begin{itemize}
-    \item [Achievement or responsibility 1 - be specific, use numbers where possible]
-    \item [Achievement or responsibility 2]
-    \item [Achievement or responsibility 3]
-    \item [Achievement or responsibility 4]
+    \item Commercial and residential painting projects with continued skill development
+    \item Continuing apprenticeship toward Red Seal certification
 \end{itemize}}}
 
 \vspace{3pt}
 
-% --- Previous Role ---
-\item{\cventry{[YYYY--YYYY]}{[Job Title]}{[Company]}{[City, Country]}{}{\vspace{1pt}
+\needspace{5\baselineskip}
+\item{\cventry{2024--2025}{Painter and Decorator}{Trademark Painting inc}{Courtenay, BC}{}{\vspace{1pt}
 \begin{itemize}
-    \item [Achievement or responsibility 1]
-    \item [Achievement or responsibility 2]
-    \item [Achievement or responsibility 3]
+    \item Completed large-scale commercial projects as part of a small crew with progressively increasing responsibility
+    \item Spent 8 months on NIC Student Dormitories project across three buildings and four floors: surface prep, priming, rolling, and spraying paint throughout dozens of suites
+    \item Performed detailed staining, sanding, and polishing of all exposed wood and structural columns
+    \item Co-led a team of labourers on restoration and repainting of the Courtenay Public Library roof
+    \item Worked with minimal supervision, taking on full painter responsibilities
 \end{itemize}}}
 
 \vspace{3pt}
 
-% --- Earlier Role ---
-\item{\cventry{[YYYY--YYYY]}{[Job Title]}{[Company]}{[City, Country]}{}{\vspace{1pt}
+\needspace{5\baselineskip}
+\item{\cventry{2023--2024}{Front Desk Receptionist}{H\&R Block}{Courtenay, BC}{}{\vspace{1pt}
 \begin{itemize}
-    \item [Achievement or responsibility 1]
-    \item [Achievement or responsibility 2]
+    \item Managed front desk operations, client scheduling, and document organization
+    \item Handled incoming calls and inquiries, providing customer service and routing complex requests
+    \item Assisted tax professionals with document preparation
+\end{itemize}}}
+
+\vspace{3pt}
+
+\needspace{5\baselineskip}
+\item{\cventry{2022--2023}{Sales Associate}{Shaw Communications}{Courtenay, BC}{}{\vspace{1pt}
+\begin{itemize}
+    \item Explained features, benefits, and pricing of telecom products and services
+    \item Tracked customer retention, sales trends, and related metrics
+\end{itemize}}}
+
+\vspace{3pt}
+
+\needspace{5\baselineskip}
+\item{\cventry{2017--2021}{Sales Associate}{The Source / Bell Canada}{Port Alberni, BC}{}{\vspace{1pt}
+\begin{itemize}
+    \item Store achieved highest month-over-month growth of any location in BC with company-wide commendations
+    \item Integral member of 3-person team: opening/closing, inventory, cash management
+    \item Leveraged technical expertise for after-purchase support, driving repeat business
+    \item Created and updated product displays using web design skills
+\end{itemize}}}
+
+\vspace{3pt}
+
+\needspace{5\baselineskip}
+\item{\cventry{2017}{Sales Associate}{Cloverdale Paints}{Port Alberni, BC}{}{\vspace{1pt}
+\begin{itemize}
+    \item Advised customers on optimal paint solutions for residential projects
+    \item Built relationships with local small businesses
+\end{itemize}}}
+
+\vspace{3pt}
+
+\needspace{5\baselineskip}
+\item{\cventry{2013--2016}{Slot Attendant}{Chances Rimrock}{Port Alberni, BC}{}{\vspace{1pt}
+\begin{itemize}
+    \item Counted, handled, and distributed large sums of cash to customers
+    \item Maintained proper security and accounting procedures
 \end{itemize}}}
 
 \end{itemize}
@@ -113,17 +145,19 @@
 \section{Education}
 \vspace{1pt}
 \begin{itemize}
-
-\item{\cventry{[YYYY--YYYY]}{[Degree] in [Field]}{[Institution]}{[City, Country]}{}{\vspace{1pt}
-Thesis: ``[Thesis Title].'' [Brief description of research focus.]
+\item{\cventry{2012--2014}{Computer Science (Studies)}{Vancouver Island University}{Nanaimo, BC}{}{\vspace{1pt}
+Coursework in programming, databases, and web development.
 }}
+\end{itemize}
 
-\vspace{3pt}
+% ============================================================
+%     CERTIFICATIONS
+% ============================================================
 
-\item{\cventry{[YYYY--YYYY]}{[Degree] in [Field]}{[Institution]}{[City, Country]}{}{\vspace{1pt}
-[Brief description or key topics.]
-}}
-
+\section{Certifications}
+\vspace{1pt}
+\begin{itemize}
+\item WHMIS, Fall Protection. Red Seal (Painter) -- in progress.
 \end{itemize}
 
 % ============================================================
@@ -133,27 +167,7 @@ Thesis: ``[Thesis Title].'' [Brief description of research focus.]
 \section{Languages}
 \vspace{1pt}
 \begin{itemize}
-\item [Language 1] (native), [Language 2] (fluent), [Language 3] (intermediate).
-\end{itemize}
-
-% ============================================================
-%     PUBLICATIONS (optional)
-% ============================================================
-
-\section{Publications}
-\vspace{1pt}
-\begin{itemize}
-\item [Author(s)] ([Year]). [Title]. [Journal/Conference]. \href{[DOI_URL]}{DOI link}
-\end{itemize}
-
-% ============================================================
-%     HONORS AND AWARDS (optional)
-% ============================================================
-
-\section{Honors and Awards}
-\vspace{1pt}
-\begin{itemize}
-\item{\textbf{[Award Name]} -- [Event/Organization] ([Year]).}
+\item English (native).
 \end{itemize}
 
 % ============================================================

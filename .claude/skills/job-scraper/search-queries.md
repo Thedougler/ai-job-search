@@ -1,7 +1,5 @@
 # Search Queries for Job Scraper
 
-<!-- SETUP: Customize these queries based on your skills, target roles, and location -->
-
 ## Search Sites
 
 Primary (Canadian job market):
@@ -15,57 +13,72 @@ Secondary (company career pages via Google):
 
 ## Query Categories
 
-Queries are grouped by priority. Each query should be combined with your location terms (e.g. "Courtenay", "Comox Valley", "BC", "remote") where the site supports it. Given the small local market, include "remote" as a modifier in most queries.
+Queries are grouped by priority. Each query should be combined with location terms (e.g. "Courtenay", "Comox Valley", "BC", "remote") where the site supports it. Given the small local market, include "remote" as a modifier in tech queries.
 
-### Priority 1: [YOUR_PRIMARY_ROLE_TYPE]
+### Priority 1: Painting / Trades (Local)
 
-These match your strongest and most desired career direction.
-
-```
-site:indeed.ca "[YOUR_PRIMARY_JOB_TITLE]" "British Columbia" OR remote
-site:ca.indeed.com "[YOUR_PRIMARY_JOB_TITLE]" BC remote
-site:linkedin.com/jobs "[YOUR_PRIMARY_JOB_TITLE]" Canada remote
-site:bcjobs.ca "[YOUR_PRIMARY_JOB_TITLE]"
-```
-
-### Priority 2: [YOUR_DOMAIN_EXPERTISE]
-
-These match your domain expertise.
+These match the strongest and most desired career direction.
 
 ```
-site:indeed.ca [YOUR_DOMAIN_KEYWORD_1] BC OR remote
-site:indeed.ca [YOUR_DOMAIN_KEYWORD_2] Canada remote
-site:linkedin.com/jobs [YOUR_DOMAIN_KEYWORD_1] Canada
-site:bcjobs.ca [YOUR_DOMAIN_KEYWORD_1]
+site:indeed.ca "painter" "Courtenay" OR "Comox Valley"
+site:indeed.ca "commercial painter" "British Columbia"
+site:indeed.ca "painter and decorator" BC
+site:indeed.ca "painting apprentice" BC
+site:bcjobs.ca painter
+site:bcjobs.ca "trades" "painter"
+site:linkedin.com/jobs "painter" "British Columbia"
+site:indeed.ca "painting labourer" BC OR "Comox Valley"
 ```
 
-### Priority 3: [YOUR_ADJACENT_ROLE_TYPE]
+### Priority 2: Construction / General Trades (Local)
 
-Adjacent roles you could pivot into.
-
-```
-site:indeed.ca "[YOUR_ADJACENT_TITLE_1]" [YOUR_KEY_SKILL] BC OR remote
-site:indeed.ca "[YOUR_ADJACENT_TITLE_2]" [YOUR_KEY_SKILL] Canada remote
-```
-
-### Priority 4: Broader Technical / Consulting
-
-Wider net for general technical roles.
+Adjacent trades roles that could leverage painting and physical work experience.
 
 ```
-site:indeed.ca [YOUR_KEY_SKILL] developer BC OR remote
-site:linkedin.com/jobs "[YOUR_KEY_SKILL] developer" Canada remote
-site:indeed.ca "technical consultant" [YOUR_DOMAIN] Canada
+site:indeed.ca "construction labourer" "Courtenay" OR "Comox Valley"
+site:indeed.ca "trades helper" BC
+site:indeed.ca "finishing trades" BC
+site:bcjobs.ca construction Comox
+site:indeed.ca "general labourer" "Courtenay" OR "Campbell River" OR "Nanaimo"
+```
+
+### Priority 3: Remote Tech / Developer
+
+Secondary search leveraging CS background and development skills.
+
+```
+site:indeed.ca "junior developer" remote Canada
+site:indeed.ca "web developer" remote Canada
+site:indeed.ca "python developer" remote Canada
+site:linkedin.com/jobs "junior developer" Canada remote
+site:linkedin.com/jobs "junior web developer" Canada remote
+site:indeed.ca "junior devops" remote Canada
+site:indeed.ca "IT support" remote Canada
+site:indeed.ca "technical support" remote Canada
+```
+
+### Priority 4: Broader / Hybrid
+
+Wider net for roles combining technical aptitude with hands-on work.
+
+```
+site:indeed.ca "technical specialist" "Courtenay" OR "Comox Valley" OR remote
+site:indeed.ca "facilities maintenance" "Courtenay" OR "Comox Valley"
+site:linkedin.com/jobs "entry level developer" Canada remote
+site:indeed.ca "help desk" remote Canada
 ```
 
 ## Location Filter
 
-When evaluating results, verify the job location is within reasonable distance or offers remote work. Define acceptable areas:
-- Courtenay / Comox Valley (ideal — local)
-- Nanaimo, Campbell River (acceptable — ~1hr drive)
-- Victoria (borderline — ~3hr, only if hybrid/mostly-remote)
-- Vancouver (remote only — ferry commute not viable daily)
+When evaluating results, verify the job location is within reasonable distance or offers remote work:
+- Courtenay / Comox Valley (ideal -- local)
+- Campbell River (acceptable -- ~1hr drive north)
+- Nanaimo (acceptable -- ~1.5hr drive south)
+- Victoria (borderline -- ~3hr, only if hybrid/mostly-remote)
+- Vancouver (remote only -- ferry commute not viable daily)
 - Canada-wide (remote only)
+
+**Minimum wage:** $23/hr. Flag any posting below this threshold.
 
 ## Date Filter
 
@@ -74,4 +87,6 @@ Only include jobs posted within the last 14 days, or with an application deadlin
 ## Adapting Queries
 
 If the user specifies a focus area, select queries from the matching category and also generate 2-3 custom queries for that focus. For example:
-- "/scrape [focus_area]" -> relevant category queries + custom focus-specific queries
+- "/scrape painting" -> Priority 1 queries only
+- "/scrape tech" -> Priority 3 queries only
+- "/scrape all" -> all priority categories
