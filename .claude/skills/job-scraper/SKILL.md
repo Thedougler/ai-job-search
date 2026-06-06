@@ -34,22 +34,41 @@ Optional arguments:
 
 ### Step 1: Search
 
-Run **WebSearch** queries from `search-queries.md`. By default, run the top 3 priority categories. If the user said "broad", run all categories.
+> **Important:** `WebSearch` with `site:indeed.ca` queries returns category/index pages, NOT individual listings — Google does not index Indeed's individual job posting pages. Always use `WebFetch` on Indeed search URLs directly to get actual listings.
 
-If the user specified a focus area (e.g. "data science"), prioritize queries from that category.
+**For Indeed/BCjobs (primary — use WebFetch directly):**
 
-For each search:
-- Use `WebSearch` with site-specific queries (indeed.ca, linkedin.com/jobs, bcjobs.ca)
-- Target your configured geographic area
-- Look for postings from the last 14 days
+Fetch these URLs directly with `WebFetch` and extract the listing cards from the HTML. Run the top 3 priority categories by default; all categories if "broad" was specified.
+
+Priority 1 — Painting/Trades (local):
+- `https://ca.indeed.com/Painting-jobs-in-Comox-Valley,-BC`
+- `https://ca.indeed.com/q-painter-decorator-l-british-columbia-jobs.html`
+- `https://www.bcjobs.ca/search?q=painter&location=comox+valley`
+
+Priority 2 — Construction/Trades (local):
+- `https://ca.indeed.com/Construction-Labourer-jobs-in-Comox-Valley,-BC`
+- `https://ca.indeed.com/Labour-jobs-in-Courtenay,-BC`
+
+Priority 3 — Remote Tech:
+- `https://ca.indeed.com/q-junior-developer-l-remote-jobs.html`
+- `https://ca.indeed.com/q-remote-junior-software-developer-jobs.html`
+- `https://ca.indeed.com/q-remote-technical-support-jobs.html`
+
+**For LinkedIn (secondary — WebSearch works for discovery):**
+
+Use `WebSearch` with queries like `site:linkedin.com/jobs "painter" "British Columbia"` to surface individual LinkedIn job URLs, then `WebFetch` each to extract details.
+
+If the user specified a focus area, prioritize the matching category's URLs.
 
 ### Step 2: Fetch & Parse
 
-For each promising result from Step 1:
-- Use `WebFetch` to retrieve the job posting page
-- Extract: **job title**, **company**, **location**, **posting date** (or "recent"), **URL**, **key requirements** (brief), **application deadline** (if listed)
+For each Indeed/BCjobs fetch from Step 1:
+- Parse the HTML response for job listing cards (title, company, location, salary, date posted, URL)
+- If the response is a redirect or login wall, note it and skip that source
+- Extract: **job title**, **company**, **location**, **posting date** (or "N days ago"), **URL**, **salary** (if shown)
 - Skip if the URL or company+title combo already exists in `seen_jobs.json`
 - Skip if the company+role already appears in `job_search_tracker.csv`
+- For any promising individual posting found, optionally `WebFetch` the direct posting URL to get full requirements and deadline
 
 ### Step 3: Quick Fit Assessment
 
@@ -115,5 +134,6 @@ If the user decides to apply to any job, add a row to `job_search_tracker.csv`.
 2. **Respect deduplication.** Always check seen_jobs.json AND job_search_tracker.csv before presenting.
 3. **Focus on configured geographic area.** Skip jobs that require relocation or are clearly outside commute range.
 4. **Only open positions.** Skip postings with expired deadlines or those marked as closed.
-5. **Be efficient with WebFetch.** Don't fetch every search result - use titles and snippets to pre-filter before fetching.
-6. **Parallel searches.** Use the Agent tool or parallel WebSearch calls to speed up the search phase.
+5. **WebFetch Indeed directly.** `site:indeed.ca` WebSearch queries return category pages, not listings — use WebFetch on the search URLs in Step 1 to get actual job cards.
+6. **Be efficient with follow-up fetches.** Pre-filter from listing cards before fetching individual posting pages.
+7. **Parallel fetches.** Use the Agent tool or parallel WebFetch calls to fetch multiple search pages at once.
