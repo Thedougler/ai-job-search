@@ -7,7 +7,6 @@
 Primary (Canadian job market):
 - **indeed.ca** - largest Canadian job board
 - **linkedin.com/jobs** - LinkedIn job listings (filter: Canada / BC)
-- **jobbank.gc.ca** - Government of Canada Job Bank
 - **bcjobs.ca** - BC-specific job board (strong for Vancouver Island / Comox Valley)
 - **glassdoor.ca** - Glassdoor Canada (reviews + listings)
 
@@ -26,7 +25,7 @@ These match your strongest and most desired career direction.
 site:indeed.ca "[YOUR_PRIMARY_JOB_TITLE]" "British Columbia" OR remote
 site:ca.indeed.com "[YOUR_PRIMARY_JOB_TITLE]" BC remote
 site:linkedin.com/jobs "[YOUR_PRIMARY_JOB_TITLE]" Canada remote
-site:jobbank.gc.ca "[YOUR_PRIMARY_JOB_TITLE]" "British Columbia"
+site:bcjobs.ca "[YOUR_PRIMARY_JOB_TITLE]"
 ```
 
 ### Priority 2: [YOUR_DOMAIN_EXPERTISE]

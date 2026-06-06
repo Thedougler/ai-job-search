@@ -49,13 +49,7 @@ cd ai-job-search
 
 Or manually: fork on GitHub, then clone your fork.
 
-## 3. Install job search CLI dependencies
-
-```bash
-cd .agents/skills/jobbank-gc-search/cli && bun install && cd ../../../..
-```
-
-## 4. Run the setup interview
+## 3. Run the setup interview
 
 Start Claude Code in the repository:
 
@@ -101,7 +95,7 @@ You can update specific sections later:
 
 The `--section search` option is especially useful as your priorities evolve. It re-runs the search configuration interview and suggests role types you may not have considered based on your full profile.
 
-## 5. Optional: Set up salary benchmarking
+## 4. Optional: Set up salary benchmarking
 
 If you have salary data (from a union, salary survey, Glassdoor, or personal research):
 
@@ -114,12 +108,12 @@ If you have salary data (from a union, salary survey, Glassdoor, or personal res
 
 This creates `salary_data.json` which the `/apply` workflow uses for salary benchmarking. If you skip this step, salary lookup is simply omitted.
 
-## 6. Test the workflow
+## 5. Test the workflow
 
 Find a job posting you're interested in, then:
 
 ```
-/apply https://jobbank.gc.ca/jobsearch/jobposting/12345678
+/apply https://indeed.ca/viewjob?jk=abc123
 ```
 
 Or paste the job description directly:
@@ -135,7 +129,7 @@ Claude will:
 4. Have a reviewer agent critique the drafts
 5. Revise and present the final output
 
-## 7. Compile your documents
+## 6. Compile your documents
 
 After `/apply` creates the LaTeX files:
 

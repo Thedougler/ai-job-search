@@ -44,13 +44,7 @@ gh repo fork MadsLorentzen/ai-job-search --clone
 cd ai-job-search
 ```
 
-### 2. Install job search tools
-
-```bash
-cd .agents/skills/jobbank-gc-search/cli && bun install && cd ../../../..
-```
-
-### 3. Set up your profile
+### 2. Set up your profile
 
 ```bash
 claude
@@ -60,7 +54,7 @@ claude
 
 `/setup` offers three paths: read your `documents/` folder if you have one populated (CV PDF, LinkedIn export, diplomas, reference letters, past applications), import a single CV pasted in chat, or walk through an interview. It auto-detects what you have and asks. Documents-folder mode is idempotent and safe to re-run as you add more material; see `documents/README.md` for the layout.
 
-### 4. Search for jobs
+### 3. Search for jobs
 
 ```bash
 /scrape
@@ -68,10 +62,10 @@ claude
 
 This searches multiple job portals for positions matching your profile, deduplicates results, and presents them sorted by fit. Pick a match to run `/apply` on it directly.
 
-### 5. Apply to a job
+### 4. Apply to a job
 
 ```bash
-/apply https://jobbank.gc.ca/jobsearch/jobposting/12345678
+/apply https://indeed.ca/viewjob?jk=abc123
 ```
 
 If the URL can't be fetched (some job portals block automated access), you can paste the job description directly instead:
@@ -115,8 +109,7 @@ ai-job-search/
 │   │   ├── job-scraper/               # Job search orchestration
 │   │   └── upskill/                   # /upskill skill gap analysis and learning plan
 │   └── settings.local.json            # Claude Code permissions
-├── .agents/skills/                    # Job portal CLI tools (Canada)
-│   └── jobbank-gc-search/             # Government of Canada Job Bank
+├── .agents/skills/                    # Job portal tools (Canada)
 ├── cv/
 │   └── main_example.tex               # moderncv LaTeX template
 ├── cover_letters/

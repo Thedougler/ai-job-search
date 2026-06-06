@@ -39,7 +39,7 @@ Run **WebSearch** queries from `search-queries.md`. By default, run the top 3 pr
 If the user specified a focus area (e.g. "data science"), prioritize queries from that category.
 
 For each search:
-- Use `WebSearch` with site-specific queries (indeed.ca, linkedin.com/jobs, jobbank.gc.ca, bcjobs.ca)
+- Use `WebSearch` with site-specific queries (indeed.ca, linkedin.com/jobs, bcjobs.ca)
 - Target your configured geographic area
 - Look for postings from the last 14 days
 
