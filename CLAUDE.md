@@ -81,6 +81,7 @@ None
 - Below $23/hr
 - Sales roles
 - Relocation outside Comox Valley (unless fully remote)
+- Requires driver's license or own vehicle (no car)
 
 ## Multi-User Setup
 

@@ -7,7 +7,7 @@
 - **Email:** nickdavenock@gmail.com
 - **Languages:** English (native)
 - **Status:** Employed - Painter at Trinity Painting
-- **Constraints:** Comox Valley or remote only; minimum $23/hr
+- **Constraints:** Comox Valley or remote only; minimum $23/hr; no driver's license/car
 
 ## Education
 
