@@ -5,7 +5,17 @@
       "Bash(python3:*)",
       "Bash(python:*)",
       "Bash(curl:*)",
-      "Bash(bun:*)"
+      "Bash(bun:*)",
+      "WebSearch",
+      "WebFetch(domain:www.bcjobs.ca)",
+      "WebFetch(domain:ca.indeed.com)",
+      "WebFetch(domain:ca.linkedin.com)",
+      "WebFetch(domain:www.workopolis.com)",
+      "WebFetch(domain:www.ziprecruiter.com)",
+      "WebFetch(domain:www.linkedin.com)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'fix\\(job-scraper\\): use WebFetch on Indeed URLs instead of WebSearch site: queries *)",
+      "WebFetch(domain:www.jobbank.gc.ca)"
     ]
   }
 }

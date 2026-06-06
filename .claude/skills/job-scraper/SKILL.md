@@ -1,139 +1,142 @@
-# Job Scraper
-
-**name:** job-scraper
-**description:** Scrapes Canadian job sites for new positions matching your profile. Deduplicates across runs. Triggers on: job scrape, find jobs, search jobs, new jobs, job search, scrape jobs, /scrape
-**allowed-tools:** Read, Write, Edit, Glob, Grep, WebFetch, WebSearch, Agent, AskUserQuestion
-
+---
+name: job-scraper
+description: Scrapes Canadian job sites for new positions matching your profile. Deduplicates across runs. Triggers on job scrape, find jobs, search jobs, new jobs, job search, scrape jobs, /scrape
 ---
 
-## How It Works
+# Job Scraper
 
-This skill searches Canadian job boards using targeted queries based on your profile, deduplicates against previously seen jobs and the application tracker, and presents new matches with a quick fit assessment.
+Searches Canadian job boards using targeted queries, deduplicates against previously seen jobs and the application tracker, and presents new matches with a quick fit assessment.
 
 ## Invocation
 
-The user triggers this skill by saying things like:
-- "Find new jobs"
-- "Scrape for jobs"
-- "Any new positions?"
-- "/scrape"
-
-Optional arguments:
-- A focus area, e.g. "/scrape data science" or "/scrape geophysics"
-- "broad" to run all search categories, e.g. "/scrape broad"
-
----
+- "Find new jobs" / "Scrape for jobs" / "Any new positions?" / `/scrape`
+- Focus area: `/scrape painting` or `/scrape tech`
+- All categories: `/scrape broad`
 
 ## Execution Steps
 
 ### Step 0: Load State
 
-1. Read `job_scraper/seen_jobs.json` (create if missing - start with `{"seen": {}}`)
+1. Read `job_scraper/seen_jobs.json` (create with `{"seen": {}}` if missing)
 2. Read `job_search_tracker.csv` to extract already-applied companies+roles
-3. Read `search-queries.md` (this directory) for the search strategy
+3. Read `search-queries.md` (this directory) for source URLs and queries
 
-### Step 1: Search
+### Step 1: Fetch Sources
 
-> **Important:** `WebSearch` with `site:indeed.ca` queries returns category/index pages, NOT individual listings — Google does not index Indeed's individual job posting pages. Always use `WebFetch` on Indeed search URLs directly to get actual listings.
+Run the top 2 priority categories by default; all categories if "broad" was specified. If the user specified a focus area, prioritize the matching category.
 
-**For Indeed/BCjobs (primary — use WebFetch directly):**
+**Use the Agent tool to fetch multiple sources in parallel** — one agent per source URL or WebSearch query. This dramatically reduces wall-clock time.
 
-Fetch these URLs directly with `WebFetch` and extract the listing cards from the HTML. Run the top 3 priority categories by default; all categories if "broad" was specified.
+#### Source A: Job Bank Canada (primary — best structured data)
 
-Priority 1 — Painting/Trades (local):
-- `https://ca.indeed.com/Painting-jobs-in-Comox-Valley,-BC`
-- `https://ca.indeed.com/q-painter-decorator-l-british-columbia-jobs.html`
-- `https://www.bcjobs.ca/search?q=painter&location=comox+valley`
+WebFetch the Job Bank search URLs from `search-queries.md`. Job Bank returns well-structured listings with individual job URLs, salaries, locations, and distance from the search center.
 
-Priority 2 — Construction/Trades (local):
-- `https://ca.indeed.com/Construction-Labourer-jobs-in-Comox-Valley,-BC`
-- `https://ca.indeed.com/Labour-jobs-in-Courtenay,-BC`
+**Critical:** Job Bank URLs must use the `mid=` (municipality ID) parameter for geographic filtering — without it, results span all of Canada. The `d=` parameter sets radius in km. See `search-queries.md` for the correct municipality IDs.
 
-Priority 3 — Remote Tech:
-- `https://ca.indeed.com/q-junior-developer-l-remote-jobs.html`
-- `https://ca.indeed.com/q-remote-junior-software-developer-jobs.html`
-- `https://ca.indeed.com/q-remote-technical-support-jobs.html`
+Extract from each result: title, company, location, salary, date posted, distance, and the individual posting URL (pattern: `https://www.jobbank.gc.ca/jobsearch/jobposting/<ID>`).
 
-**For LinkedIn (secondary — WebSearch works for discovery):**
+#### Source B: Indeed Canada (primary — largest volume)
 
-Use `WebSearch` with queries like `site:linkedin.com/jobs "painter" "British Columbia"` to surface individual LinkedIn job URLs, then `WebFetch` each to extract details.
+WebFetch the Indeed search URLs from `search-queries.md`. Indeed returns listing cards with title, company, location, and salary.
 
-If the user specified a focus area, prioritize the matching category's URLs.
+**Indeed URL extraction:** Indeed search pages embed job keys in the HTML. When parsing results, look for job card links containing `/viewjob?jk=` or `/rc/clk?jk=` or `data-jk` attributes. Build individual job URLs as `https://ca.indeed.com/viewjob?jk=<KEY>`.
 
-### Step 2: Fetch & Parse
+**Sponsored/ad listings** use `pagead/clk` URLs instead of `/viewjob?jk=` — these can't be converted to stable individual URLs. Fall back to a composite dedup key of `company_title_location` for these.
 
-For each Indeed/BCjobs fetch from Step 1:
-- Parse the HTML response for job listing cards (title, company, location, salary, date posted, URL)
-- If the response is a redirect or login wall, note it and skip that source
-- Extract: **job title**, **company**, **location**, **posting date** (or "N days ago"), **URL**, **salary** (if shown)
-- Skip if the URL or company+title combo already exists in `seen_jobs.json`
-- Skip if the company+role already appears in `job_search_tracker.csv`
-- For any promising individual posting found, optionally `WebFetch` the direct posting URL to get full requirements and deadline
+**If Indeed returns a CAPTCHA or login wall:** skip it and note in output. Do not retry.
+
+#### Source C: General WebSearch (supplementary discovery)
+
+Run broad WebSearch queries (without `site:` filters) to catch listings from boards not covered by Sources A/B — WorkBC, ZipRecruiter, Glassdoor, company career pages, etc. Example queries:
+```
+painter jobs Courtenay BC 2026
+construction labourer Comox Valley BC hiring
+```
+
+WebFetch any individual listing URLs from results. **Most results will be aggregator/category pages — skip those.** This source has low yield but occasionally surfaces listings not on Job Bank or Indeed.
+
+**BCjobs.ca is unreliable:** direct WebFetch returns 403, and `site:bcjobs.ca` WebSearch only returns category pages, not individual listings. Do not spend time on it.
+
+#### Source D: LinkedIn (secondary — WebSearch discovery)
+
+Use WebSearch: `site:linkedin.com/jobs "painter" "British Columbia"`
+
+Then WebFetch individual LinkedIn job URLs to extract details.
+
+### Step 2: Parse & Deduplicate
+
+For each job found across all sources:
+1. Extract: **title**, **company**, **location**, **salary**, **date posted**, **URL**, **source site**
+2. Skip if the URL or `company+title` combo exists in `seen_jobs.json`
+3. Skip if the company+role appears in `job_search_tracker.csv`
+4. Skip jobs with expired deadlines or marked as closed
+5. Skip jobs outside the geographic range (see Location Filter in `search-queries.md`)
+6. Skip jobs below $23/hr minimum
 
 ### Step 3: Quick Fit Assessment
 
-For each new job, do a rapid fit check (NOT the full evaluation from `04-job-evaluation.md` - just a quick signal):
+For each new job, rapid fit check (NOT the full evaluation — just a signal):
 
-- **High match**: Role directly involves your core skills
-- **Medium match**: Role is adjacent to your experience
-- **Low match**: Role requires significant skills you lack
+- **High**: Role directly involves core skills (painting, trades, hands-on tech)
+- **Medium**: Role is adjacent to experience (construction, maintenance, entry-level dev)
+- **Low**: Role requires significant skills not held
 
-### Step 4: Deduplicate & Store
+### Step 4: Store
 
-1. Add ALL fetched jobs (new and skipped) to `seen_jobs.json` with structure:
+Add ALL fetched jobs (new and skipped) to `seen_jobs.json`:
 ```json
 {
   "seen": {
     "<url_or_company_title_key>": {
       "title": "...",
       "company": "...",
+      "location": "...",
       "url": "...",
+      "source": "jobbank|indeed|bcjobs|linkedin",
       "first_seen": "YYYY-MM-DD",
+      "salary": "...",
       "fit": "high/medium/low",
       "status": "new/skipped/evaluated"
     }
   }
 }
 ```
-2. Only present jobs NOT already in the seen list or tracker.
 
 ### Step 5: Present Results
-
-Present new jobs in a table sorted by fit (high first):
 
 ```
 ## New Job Matches - YYYY-MM-DD
 
 Found X new positions (Y high, Z medium, W low match).
+Sources checked: Job Bank (N results), Indeed (N results), BCjobs (N results)
 
-| # | Fit | Title | Company | Location | Deadline | URL |
-|---|-----|-------|---------|----------|----------|-----|
-| 1 | High | ... | ... | ... | ... | [Link](...) |
+| # | Fit | Title | Company | Location | Salary | Source | URL |
+|---|-----|-------|---------|----------|--------|--------|-----|
+| 1 | High | ... | ... | ... | ... | Job Bank | [Link](...) |
 
 ### High-Match Highlights
-For each high-match job, add 2-3 bullet points:
-- Why it matches your profile
+For each high-match job:
+- Why it matches
 - Key requirements to check
-- Any red flags
+- Any red flags (distance, low pay, etc.)
 ```
 
 After presenting, ask:
-> "Want me to evaluate any of these in detail? Just give me the number(s)."
+> "Want me to evaluate any of these in detail? Give me the number(s)."
 
-If the user picks a number, invoke the **job-application-assistant** skill workflow (fit evaluation first, then CV + cover letter if approved).
+If the user picks a number, invoke the **job-application-assistant** skill.
 
 ### Step 6: Update Tracker (Optional)
 
-If the user decides to apply to any job, add a row to `job_search_tracker.csv`.
-
----
+If the user decides to apply, add a row to `job_search_tracker.csv`.
 
 ## Important Rules
 
-1. **Never fabricate job postings.** Only present jobs found via actual WebSearch/WebFetch results.
-2. **Respect deduplication.** Always check seen_jobs.json AND job_search_tracker.csv before presenting.
-3. **Focus on configured geographic area.** Skip jobs that require relocation or are clearly outside commute range.
-4. **Only open positions.** Skip postings with expired deadlines or those marked as closed.
-5. **WebFetch Indeed directly.** `site:indeed.ca` WebSearch queries return category pages, not listings — use WebFetch on the search URLs in Step 1 to get actual job cards.
-6. **Be efficient with follow-up fetches.** Pre-filter from listing cards before fetching individual posting pages.
-7. **Parallel fetches.** Use the Agent tool or parallel WebFetch calls to fetch multiple search pages at once.
+1. **Never fabricate job postings.** Only present jobs from actual WebFetch/WebSearch results.
+2. **Respect deduplication.** Always check seen_jobs.json AND job_search_tracker.csv.
+3. **Geographic filter.** Skip jobs outside commute range (see search-queries.md).
+4. **WebFetch Indeed directly.** `site:indeed.ca` WebSearch queries return category pages, not listings.
+5. **WebFetch Job Bank directly.** Always use `mid=` parameter for location filtering.
+6. **WebSearch for BCjobs.** Direct fetch returns 403 — discover via WebSearch, then fetch individual listing URLs.
+7. **Parallel fetches.** Use the Agent tool to fetch multiple sources concurrently.
+8. **Report source failures.** If a source returns CAPTCHA/403/error, note it and continue with other sources.
