@@ -76,6 +76,32 @@ This repo is a job application workspace. Claude acts as a career advisor and ap
 - [DEALBREAKER_1]
 - [DEALBREAKER_2]
 
+## Multi-User Setup
+
+`master` is the clean framework template — no personal data ever lives on it.
+Every user, including the repo owner, works on their own branch.
+
+**On session start, check the current branch:**
+```bash
+git branch --show-current
+```
+
+If on `master`, do not proceed. Ask the user for their name and create or
+switch to their personal branch:
+```bash
+git checkout -b user/<firstname-lastname>   # e.g. user/nick-davenock
+# or if it already exists:
+git checkout user/<firstname-lastname>
+```
+
+**Branch conventions:**
+- All CV files, cover letters, and CLAUDE.md profile edits stay on the
+  user's branch — never commit personal data to `master`
+- `/setup` populates CLAUDE.md on the user's branch only
+- `/reset` (wipe profile) operates on the current branch only
+- To onboard a new user: stay on `master`, create their branch, switch to it,
+  then run `/setup`
+
 ## Repo Structure
 - `cv/` - LaTeX CV variants (moderncv template, banking style)
 - `cover_letters/` - LaTeX cover letters (custom cover.cls template)
