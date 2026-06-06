@@ -24,9 +24,12 @@ Largest volume of Canadian job listings. Fetch search result pages directly.
 
 **Individual job URLs:** Extract `jk=` keys from search results HTML. Build as `https://ca.indeed.com/viewjob?jk=<KEY>`.
 
-### BCjobs.ca (unreliable — skip)
+### BCjobs.ca (Playwright — headless browser required)
 
-Direct WebFetch returns 403. `site:bcjobs.ca` WebSearch returns only category pages, never individual listings. Do not spend time on this source.
+WebFetch returns 403. Use Playwright MCP (`browser_navigate` + `browser_snapshot`).
+
+**URL pattern:** `https://www.bcjobs.ca/search-jobs?q=<QUERY>&location=`
+**Individual job URLs:** `https://www.bcjobs.ca/jobs/<slug>` (extract from snapshot)
 
 ### LinkedIn (WebSearch discovery)
 
@@ -52,6 +55,10 @@ Run broad queries without `site:` filters to catch listings from any board (Work
 - `https://ca.indeed.com/q-painter-decorator-l-british-columbia-jobs.html`
 - `https://ca.indeed.com/q-painting-apprentice-l-british-columbia-jobs.html`
 
+**BCjobs (Playwright):**
+- `https://www.bcjobs.ca/search-jobs?q=painter&location=`
+- `https://www.bcjobs.ca/search-jobs?q=painting&location=`
+
 **General WebSearch:**
 - `painter jobs Courtenay Comox Valley BC 2026`
 - `painting apprentice Vancouver Island BC hiring`
@@ -67,6 +74,10 @@ Run broad queries without `site:` filters to catch listings from any board (Work
 - `https://ca.indeed.com/Construction-Labourer-jobs-in-Comox-Valley,-BC`
 - `https://ca.indeed.com/Labour-jobs-in-Courtenay,-BC`
 - `https://ca.indeed.com/q-trades-helper-l-british-columbia-jobs.html`
+
+**BCjobs (Playwright):**
+- `https://www.bcjobs.ca/search-jobs?q=construction+labourer&location=`
+- `https://www.bcjobs.ca/search-jobs?q=trades&location=`
 
 **General WebSearch:**
 - `construction labourer Courtenay Comox Valley BC 2026`

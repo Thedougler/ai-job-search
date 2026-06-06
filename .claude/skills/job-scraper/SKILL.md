@@ -7,6 +7,16 @@ description: Scrapes Canadian job sites for new positions matching your profile.
 
 Searches Canadian job boards using targeted queries, deduplicates against previously seen jobs and the application tracker, and presents new matches with a quick fit assessment.
 
+## Fetch Tools
+
+Three tools are available for fetching web content. Choose per-source:
+
+| Tool | Best for | Notes |
+|------|----------|-------|
+| **WebFetch** | Job Bank, Indeed | Fast, works on sites that serve HTML to bots |
+| **Playwright** (`mcp__playwright__*`) | BCjobs.ca, JS-heavy sites | Headless browser — bypasses 403s and renders JS. Use `browser_navigate` then `browser_snapshot` to extract page content |
+| **defuddle-fetch** (`mcp__defuddle-fetch__*`) | Any site, cleaner output | Strips ads/nav/footers, returns clean markdown. Lower token cost than raw HTML. Good fallback if WebFetch returns noisy results |
+
 ## Invocation
 
 - "Find new jobs" / "Scrape for jobs" / "Any new positions?" / `/scrape`
@@ -45,19 +55,29 @@ WebFetch the Indeed search URLs from `search-queries.md`. Indeed returns listing
 
 **If Indeed returns a CAPTCHA or login wall:** skip it and note in output. Do not retry.
 
-#### Source C: General WebSearch (supplementary discovery)
+#### Source C: BCjobs.ca (Playwright only — WebFetch returns 403)
 
-Run broad WebSearch queries (without `site:` filters) to catch listings from boards not covered by Sources A/B — WorkBC, ZipRecruiter, Glassdoor, company career pages, etc. Example queries:
+BCjobs.ca blocks raw HTTP requests. Use Playwright headless browser:
+
+1. Navigate to `https://www.bcjobs.ca/search-jobs?q=<QUERY>&location=` (note: `/search-jobs` not `/search`)
+2. Take a `browser_snapshot` to extract listing cards
+3. Each listing shows: title, company, location, date posted
+4. Individual job URLs follow pattern: `https://www.bcjobs.ca/jobs/<slug>`
+5. Click into promising listings or WebFetch the individual URLs for full details
+
+**Important:** BCjobs has low volume for trades — expect 0-5 results per query. Don't spend multiple queries if the first returns nothing relevant.
+
+#### Source D: General WebSearch (supplementary discovery)
+
+Run broad WebSearch queries (without `site:` filters) to catch listings from boards not covered by Sources A-C — WorkBC, ZipRecruiter, Glassdoor, company career pages, etc.:
 ```
 painter jobs Courtenay BC 2026
 construction labourer Comox Valley BC hiring
 ```
 
-WebFetch any individual listing URLs from results. **Most results will be aggregator/category pages — skip those.** This source has low yield but occasionally surfaces listings not on Job Bank or Indeed.
+WebFetch or defuddle-fetch any individual listing URLs from results. **Most results will be aggregator/category pages — skip those.**
 
-**BCjobs.ca is unreliable:** direct WebFetch returns 403, and `site:bcjobs.ca` WebSearch only returns category pages, not individual listings. Do not spend time on it.
-
-#### Source D: LinkedIn (secondary — WebSearch discovery)
+#### Source E: LinkedIn (secondary — WebSearch discovery)
 
 Use WebSearch: `site:linkedin.com/jobs "painter" "British Columbia"`
 
@@ -132,11 +152,12 @@ If the user decides to apply, add a row to `job_search_tracker.csv`.
 
 ## Important Rules
 
-1. **Never fabricate job postings.** Only present jobs from actual WebFetch/WebSearch results.
+1. **Never fabricate job postings.** Only present jobs from actual fetch results.
 2. **Respect deduplication.** Always check seen_jobs.json AND job_search_tracker.csv.
 3. **Geographic filter.** Skip jobs outside commute range (see search-queries.md).
 4. **WebFetch Indeed directly.** `site:indeed.ca` WebSearch queries return category pages, not listings.
 5. **WebFetch Job Bank directly.** Always use `mid=` parameter for location filtering.
-6. **WebSearch for BCjobs.** Direct fetch returns 403 — discover via WebSearch, then fetch individual listing URLs.
+6. **Playwright for BCjobs.** WebFetch returns 403 — use headless browser via Playwright MCP.
 7. **Parallel fetches.** Use the Agent tool to fetch multiple sources concurrently.
 8. **Report source failures.** If a source returns CAPTCHA/403/error, note it and continue with other sources.
+9. **Right tool for the site.** See Fetch Tools table — use WebFetch for Job Bank/Indeed, Playwright for BCjobs, defuddle-fetch for noisy pages.
