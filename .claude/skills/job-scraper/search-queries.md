@@ -4,28 +4,29 @@
 
 ## Search Sites
 
-Primary (Danish job market):
-- **jobindex.dk** - largest Danish job board
-- **linkedin.com/jobs** - LinkedIn job listings (filter: Denmark / your city)
-- **karriere.dk** - IDA's job board (engineering/science roles)
-- **jobfinder.dk** - another major Danish job board
-- **akademikernes.dk** - academic union job board
+Primary (Canadian job market):
+- **indeed.ca** - largest Canadian job board
+- **linkedin.com/jobs** - LinkedIn job listings (filter: Canada / BC)
+- **jobbank.gc.ca** - Government of Canada Job Bank
+- **bcjobs.ca** - BC-specific job board (strong for Vancouver Island / Comox Valley)
+- **glassdoor.ca** - Glassdoor Canada (reviews + listings)
 
 Secondary (company career pages via Google):
 - Direct Google searches with `site:` filters for known target companies
 
 ## Query Categories
 
-Queries are grouped by priority. Each query should be combined with your location terms (e.g. "Copenhagen", "Sjælland", "Hovedstaden") where the site supports it.
+Queries are grouped by priority. Each query should be combined with your location terms (e.g. "Courtenay", "Comox Valley", "BC", "remote") where the site supports it. Given the small local market, include "remote" as a modifier in most queries.
 
 ### Priority 1: [YOUR_PRIMARY_ROLE_TYPE]
 
 These match your strongest and most desired career direction.
 
 ```
-site:jobindex.dk "[YOUR_PRIMARY_JOB_TITLE]" [YOUR_CITY]
-site:jobindex.dk "[YOUR_KEY_SKILL]" [YOUR_CITY]
-site:linkedin.com/jobs "[YOUR_PRIMARY_JOB_TITLE]" [YOUR_COUNTRY]
+site:indeed.ca "[YOUR_PRIMARY_JOB_TITLE]" "British Columbia" OR remote
+site:ca.indeed.com "[YOUR_PRIMARY_JOB_TITLE]" BC remote
+site:linkedin.com/jobs "[YOUR_PRIMARY_JOB_TITLE]" Canada remote
+site:jobbank.gc.ca "[YOUR_PRIMARY_JOB_TITLE]" "British Columbia"
 ```
 
 ### Priority 2: [YOUR_DOMAIN_EXPERTISE]
@@ -33,9 +34,10 @@ site:linkedin.com/jobs "[YOUR_PRIMARY_JOB_TITLE]" [YOUR_COUNTRY]
 These match your domain expertise.
 
 ```
-site:jobindex.dk [YOUR_DOMAIN_KEYWORD_1] [YOUR_CITY] OR [YOUR_REGION]
-site:jobindex.dk [YOUR_DOMAIN_KEYWORD_2] [YOUR_COUNTRY]
-site:linkedin.com/jobs [YOUR_DOMAIN_KEYWORD_1] [YOUR_CITY] [YOUR_COUNTRY]
+site:indeed.ca [YOUR_DOMAIN_KEYWORD_1] BC OR remote
+site:indeed.ca [YOUR_DOMAIN_KEYWORD_2] Canada remote
+site:linkedin.com/jobs [YOUR_DOMAIN_KEYWORD_1] Canada
+site:bcjobs.ca [YOUR_DOMAIN_KEYWORD_1]
 ```
 
 ### Priority 3: [YOUR_ADJACENT_ROLE_TYPE]
@@ -43,8 +45,8 @@ site:linkedin.com/jobs [YOUR_DOMAIN_KEYWORD_1] [YOUR_CITY] [YOUR_COUNTRY]
 Adjacent roles you could pivot into.
 
 ```
-site:jobindex.dk "[YOUR_ADJACENT_TITLE_1]" [YOUR_KEY_SKILL] [YOUR_CITY]
-site:jobindex.dk "[YOUR_ADJACENT_TITLE_2]" [YOUR_KEY_SKILL] [YOUR_CITY]
+site:indeed.ca "[YOUR_ADJACENT_TITLE_1]" [YOUR_KEY_SKILL] BC OR remote
+site:indeed.ca "[YOUR_ADJACENT_TITLE_2]" [YOUR_KEY_SKILL] Canada remote
 ```
 
 ### Priority 4: Broader Technical / Consulting
@@ -52,19 +54,19 @@ site:jobindex.dk "[YOUR_ADJACENT_TITLE_2]" [YOUR_KEY_SKILL] [YOUR_CITY]
 Wider net for general technical roles.
 
 ```
-site:jobindex.dk [YOUR_KEY_SKILL] developer [YOUR_CITY]
-site:linkedin.com/jobs "[YOUR_KEY_SKILL] developer" [YOUR_CITY]
-site:jobindex.dk "technical consultant" [YOUR_DOMAIN] [YOUR_CITY]
+site:indeed.ca [YOUR_KEY_SKILL] developer BC OR remote
+site:linkedin.com/jobs "[YOUR_KEY_SKILL] developer" Canada remote
+site:indeed.ca "technical consultant" [YOUR_DOMAIN] Canada
 ```
 
 ## Location Filter
 
-When evaluating results, verify the job location is within reasonable commute distance from your home. Define acceptable areas:
-- [YOUR_CITY] and surrounding areas
-- [ACCEPTABLE_AREA_1]
-- [ACCEPTABLE_AREA_2]
-- [BORDERLINE_AREA] (borderline - ~X min by transit)
-- [TOO_FAR_AREA] (too far)
+When evaluating results, verify the job location is within reasonable distance or offers remote work. Define acceptable areas:
+- Courtenay / Comox Valley (ideal — local)
+- Nanaimo, Campbell River (acceptable — ~1hr drive)
+- Victoria (borderline — ~3hr, only if hybrid/mostly-remote)
+- Vancouver (remote only — ferry commute not viable daily)
+- Canada-wide (remote only)
 
 ## Date Filter
 

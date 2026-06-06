@@ -144,10 +144,10 @@ The font wrapper is mandatory — if you just move `\begin{itemize}` outside `\l
 - Underscore: `\_`
 - Ampersand: `\&`
 
-### Non-English Cover Letters
-- Same template structure, just write content in the posting's language
-- Adjust date format to local convention
-- Adjust closing to local convention (e.g. "Med venlig hilsen," for Danish)
+### Bilingual Positions (French/English)
+- Some federal government positions require bilingual applications
+- Same template structure; write content in the posting's language
+- For French cover letters, use "Cordialement," or "Veuillez agréer mes salutations distinguées," as closing
 
 ## Checklist Before Finalizing
 - [ ] No em-dashes (use commas or periods instead)

@@ -24,7 +24,7 @@ python --version
 
 ### Bun (for job search tools)
 
-The Danish job portal CLIs are written in TypeScript and run with Bun:
+The Canadian job portal CLI is written in TypeScript and runs with Bun:
 
 ```bash
 curl -fsSL https://bun.sh/install | bash
@@ -52,9 +52,7 @@ Or manually: fork on GitHub, then clone your fork.
 ## 3. Install job search CLI dependencies
 
 ```bash
-for tool in jobbank-search jobdanmark-search jobindex-search jobnet-search; do
-  cd .agents/skills/$tool/cli && bun install && cd ../../../..
-done
+cd .agents/skills/jobbank-gc-search/cli && bun install && cd ../../../..
 ```
 
 ## 4. Run the setup interview
@@ -121,7 +119,7 @@ This creates `salary_data.json` which the `/apply` workflow uses for salary benc
 Find a job posting you're interested in, then:
 
 ```
-/apply https://jobindex.dk/job/1234567
+/apply https://jobbank.gc.ca/jobsearch/jobposting/12345678
 ```
 
 Or paste the job description directly:

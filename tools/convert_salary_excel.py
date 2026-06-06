@@ -17,8 +17,8 @@ The output file (salary_data.json) will be written to the repository root.
 
 Expected Excel format:
     - A header row with column names
-    - A "Company" or "Firma" column (required)
-    - An optional "City" or "By" column
+    - A "Company" column (required)
+    - An optional "City" column
     - Any number of numeric data columns (salary index, count, etc.)
 
 The script auto-detects the header row and column layout. For Excel files
@@ -38,10 +38,10 @@ except ImportError:
 
 
 # Column name patterns for auto-detection
-COMPANY_PATTERNS = {"firma", "company", "virksomhed", "employer", "arbejdsgiver"}
-CITY_PATTERNS = {"by", "city", "kommune", "location", "lokation", "sted"}
-COUNT_PATTERNS = {"antal", "count", "number", "n", "employees", "medarbejdere"}
-INDEX_PATTERNS = {"indeks", "index", "idx", "salary", "løn", "median", "average", "gennemsnit"}
+COMPANY_PATTERNS = {"company", "employer", "organization", "firm"}
+CITY_PATTERNS = {"city", "location", "province", "region"}
+COUNT_PATTERNS = {"count", "number", "n", "employees", "headcount"}
+INDEX_PATTERNS = {"index", "idx", "salary", "median", "average", "compensation"}
 
 
 def detect_column_type(header):
@@ -235,7 +235,7 @@ def main():
 
     if not all_companies:
         print("Error: No data could be parsed from the Excel file.", file=sys.stderr)
-        print("Make sure the Excel file has a header row with a 'Company'/'Firma' column.", file=sys.stderr)
+        print("Make sure the Excel file has a header row with a 'Company' column.", file=sys.stderr)
         sys.exit(1)
 
     # Build output

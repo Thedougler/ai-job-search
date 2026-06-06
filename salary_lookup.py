@@ -12,7 +12,7 @@ instructions on the expected format and how to convert from Excel.
 
 Usage:
     python salary_lookup.py "Company Name"
-    python salary_lookup.py "Company Name" --city "København"
+    python salary_lookup.py "Company Name" --city "Vancouver"
     python salary_lookup.py "Company Name" --json
     python salary_lookup.py --list-all
 """
@@ -26,18 +26,21 @@ from pathlib import Path
 
 DATA_FILE = Path(__file__).parent / "salary_data.json"
 
-# Common Danish <-> anglicized spelling variants
+# Common character normalization for fuzzy matching
 SPELLING_VARIANTS = {
+    "é": "e", "è": "e", "ê": "e", "ë": "e",
+    "à": "a", "â": "a", "ä": "ae",
+    "ö": "o", "ô": "o", "ü": "u", "û": "u",
+    "ç": "c", "ñ": "n",
     "ø": "o", "æ": "ae", "å": "aa",
-    "ö": "o", "ä": "ae", "ü": "u",
 }
 
 # Legal suffixes and noise to strip when matching company names
 STRIP_PATTERNS = [
-    r"\ba/s\b", r"\baps\b", r"\bi/s\b", r"\bp/s\b", r"\bk/s\b",
-    r"\bivs\b", r"\bamba\b", r"\ba\.m\.b\.a\.\b",
+    r"\binc\b", r"\bltd\b", r"\bllc\b", r"\bllp\b", r"\bco\b",
+    r"\ba/s\b", r"\baps\b", r"\bi/s\b", r"\bp/s\b",
     r"\(vg\)", r"\(.*?\)",  # (VG) and other parentheticals
-    r"\bdanmark\b", r"\bdenmark\b", r"\bscandinavia\b", r"\bnordic\b",
+    r"\bcanada\b", r"\bcorp\b", r"\bcorporation\b",
     r"\bgroup\b", r"\bholding\b",
     r",\s*.*$",  # everything after comma (sub-entities)
 ]
@@ -67,10 +70,10 @@ def normalize(s):
 
 
 def anglicize(s):
-    """Convert Danish/Nordic characters to anglicized equivalents."""
+    """Convert accented/special characters to ASCII equivalents."""
     s = s.lower()
-    for danish, english in SPELLING_VARIANTS.items():
-        s = s.replace(danish, english)
+    for special, ascii_eq in SPELLING_VARIANTS.items():
+        s = s.replace(special, ascii_eq)
     return s
 
 

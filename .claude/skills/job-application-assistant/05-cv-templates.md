@@ -21,7 +21,7 @@ Expected output: `Output written on main_<company>.pdf (2 pages, ...)`. Any page
 ## Document Structure
 
 ```latex
-\documentclass[11pt,a4paper,sans]{moderncv}
+\documentclass[11pt,letterpaper,sans]{moderncv}
 \moderncvstyle{banking}
 \moderncvcolor{blue}
 
