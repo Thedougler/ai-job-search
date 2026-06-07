@@ -108,6 +108,7 @@ git checkout user/<firstname-lastname>
 - `/reset` (wipe profile) operates on the current branch only
 - To onboard a new user: stay on `master`, create their branch, switch to it,
   then run `/setup`
+- **After completing any operation**, commit and push to the remote as the final step.
 
 ## Repo Structure
 - `cv/` - LaTeX CV variants (moderncv template, banking style)
