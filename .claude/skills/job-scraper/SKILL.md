@@ -13,9 +13,9 @@ Three tools are available for fetching web content. Choose per-source:
 
 | Tool | Best for | Notes |
 |------|----------|-------|
-| **WebFetch** | Job Bank, Indeed | Fast, works on sites that serve HTML to bots |
-| **Playwright** (`mcp__playwright__*`) | BCjobs.ca, JS-heavy sites | Headless browser — bypasses 403s and renders JS. Use `browser_navigate` then `browser_snapshot` to extract page content |
-| **defuddle-fetch** (`mcp__defuddle-fetch__*`) | Any site, cleaner output | Strips ads/nav/footers, returns clean markdown. Lower token cost than raw HTML. Good fallback if WebFetch returns noisy results |
+| **WebFetch** | Job Bank, Indeed, Craigslist, Talent.com | Fast, works on sites that serve HTML to bots |
+| **Playwright** (`mcp__playwright__*`) | BCjobs.ca, WorkBC, JS-heavy sites | Headless browser — bypasses 403s and renders JS. Use `browser_navigate` then `browser_snapshot` to extract page content |
+| **defuddle-fetch** (`mcp__defuddle-fetch__*`) | Any site, cleaner output | Strips ads/nav/footers, returns clean markdown. Lower token cost than raw HTML. Good fallback if WebFetch returns noisy results (e.g. Talent.com) |
 
 ## Invocation
 
@@ -67,9 +67,39 @@ BCjobs.ca blocks raw HTTP requests. Use Playwright headless browser:
 
 **Important:** BCjobs has low volume for trades — expect 0-5 results per query. Don't spend multiple queries if the first returns nothing relevant.
 
-#### Source D: General WebSearch (supplementary discovery)
+#### Source D: Craigslist Comox Valley (WebFetch — local trades)
 
-Run broad WebSearch queries (without `site:` filters) to catch listings from boards not covered by Sources A-C — WorkBC, ZipRecruiter, Glassdoor, company career pages, etc.:
+WebFetch the Craigslist trades category search URLs from `search-queries.md`. Craigslist returns static HTML with listings in `<li>` elements containing title, location, compensation, and posting URL.
+
+**Individual posting URLs:** `https://comoxvalley.craigslist.org/trd/d/<slug>/<id>.html`
+
+**Salary handling:** Compensation frequently shows $0 — this means "not listed", not unpaid. Do not filter Craigslist results on salary. Flag as "salary unlisted" instead.
+
+**Volume:** Expect 5-15 results per query. Craigslist skews toward small contractors and independent employers — these postings rarely appear on Indeed or Job Bank.
+
+#### Source E: Talent.com (WebFetch — Canadian aggregator)
+
+WebFetch the Talent.com search URLs from `search-queries.md`. Talent.com returns listing cards with job title, company, location, and salary.
+
+**Individual job URLs:** Talent.com uses redirect-based URLs — `https://ca.talent.com/redirect?id=<ID>&...`. Store the full redirect URL as the dedup key. These redirect to the original employer posting.
+
+**If WebFetch returns cluttered results:** Fall back to defuddle-fetch for cleaner markdown output.
+
+#### Source F: WorkBC (Playwright — BC provincial board)
+
+WorkBC is a JavaScript SPA — WebFetch returns an empty shell. Use Playwright headless browser (same approach as BCjobs):
+
+1. `browser_navigate` to `https://www.workbc.ca/search-and-prepare-job/find-jobs`
+2. Take `browser_snapshot` to locate the search form
+3. Fill keyword and location fields using `browser_fill_form` or `browser_click` + `browser_type`
+4. Submit and take `browser_snapshot` to extract results
+5. Extract: title, company, location, salary, posting URL
+
+**Volume:** WorkBC has ~28K total listings across BC. Many municipal employers and small contractors post only here.
+
+#### Source G: General WebSearch (supplementary discovery)
+
+Run broad WebSearch queries (without `site:` filters) to catch listings from boards not covered by Sources A-F — ZipRecruiter, Glassdoor, company career pages, etc.:
 ```
 painter jobs Courtenay BC 2026
 construction labourer Comox Valley BC hiring
@@ -77,7 +107,7 @@ construction labourer Comox Valley BC hiring
 
 WebFetch or defuddle-fetch any individual listing URLs from results. **Most results will be aggregator/category pages — skip those.**
 
-#### Source E: LinkedIn (secondary — WebSearch discovery)
+#### Source H: LinkedIn (secondary — WebSearch discovery)
 
 Use WebSearch: `site:linkedin.com/jobs "painter" "British Columbia"`
 
@@ -112,7 +142,7 @@ Add ALL fetched jobs (new and skipped) to `seen_jobs.json`:
       "company": "...",
       "location": "...",
       "url": "...",
-      "source": "jobbank|indeed|bcjobs|linkedin",
+      "source": "jobbank|indeed|bcjobs|craigslist|talent|workbc|linkedin",
       "first_seen": "YYYY-MM-DD",
       "salary": "...",
       "fit": "high/medium/low",
@@ -128,7 +158,7 @@ Add ALL fetched jobs (new and skipped) to `seen_jobs.json`:
 ## New Job Matches - YYYY-MM-DD
 
 Found X new positions (Y high, Z medium, W low match).
-Sources checked: Job Bank (N results), Indeed (N results), BCjobs (N results)
+Sources checked: Job Bank (N), Indeed (N), BCjobs (N), Craigslist (N), Talent.com (N), WorkBC (N)
 
 | # | Fit | Title | Company | Location | Salary | Source | URL |
 |---|-----|-------|---------|----------|--------|--------|-----|
@@ -160,4 +190,7 @@ If the user decides to apply, add a row to `job_search_tracker.csv`.
 6. **Playwright for BCjobs.** WebFetch returns 403 — use headless browser via Playwright MCP.
 7. **Parallel fetches.** Use the Agent tool to fetch multiple sources concurrently.
 8. **Report source failures.** If a source returns CAPTCHA/403/error, note it and continue with other sources.
-9. **Right tool for the site.** See Fetch Tools table — use WebFetch for Job Bank/Indeed, Playwright for BCjobs, defuddle-fetch for noisy pages.
+9. **Right tool for the site.** See Fetch Tools table — use WebFetch for Job Bank/Indeed/Craigslist/Talent.com, Playwright for BCjobs/WorkBC, defuddle-fetch for noisy pages.
+10. **Craigslist salary = $0 means unlisted.** Never filter Craigslist results on salary — $0 is the default when compensation isn't specified. Flag as "salary unlisted".
+11. **WorkBC requires Playwright.** JS SPA — WebFetch returns empty HTML. Same headless browser approach as BCjobs.
+12. **Talent.com redirect URLs.** Individual job links are redirect URLs (`/redirect?id=...`). Store the full redirect URL as the dedup key.

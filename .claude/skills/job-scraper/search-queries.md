@@ -31,13 +31,41 @@ WebFetch returns 403. Use Playwright MCP (`browser_navigate` + `browser_snapshot
 **URL pattern:** `https://www.bcjobs.ca/search-jobs?q=<QUERY>&location=`
 **Individual job URLs:** `https://www.bcjobs.ca/jobs/<slug>` (extract from snapshot)
 
+### Craigslist Comox Valley (WebFetch — local trades)
+
+Hyper-local classifieds. Small contractors and independent employers post here and nowhere else. Static HTML, works with WebFetch.
+
+**URL pattern:** `https://comoxvalley.craigslist.org/search/trd?query=<QUERY>` (skilled trades category)
+**Alternative category:** `https://comoxvalley.craigslist.org/search/lab?query=<QUERY>` (general labour)
+**Individual posting URLs:** `https://comoxvalley.craigslist.org/trd/d/<slug>/<id>.html`
+
+**Salary caveat:** Compensation often shows $0 — this means "not listed", not unpaid. Do not filter Craigslist results on salary; flag as "salary unlisted" instead.
+
+### Talent.com (WebFetch — Canadian aggregator)
+
+Large Canadian job aggregator (formerly Neuvoo). Pulls from employer career portals, so surfaces postings not always on Indeed or Job Bank.
+
+**URL pattern:** `https://ca.talent.com/jobs?k=<KEYWORDS>&l=Courtenay%2C+BC`
+**Parameters:** `k` (keywords), `l` (location), `radius` (km, optional), `date` (recency: `1`, `3`, `7`)
+**Individual job URLs:** Redirect-based — `https://ca.talent.com/redirect?id=<ID>&...`. Use the full redirect URL as the dedup key.
+
+### WorkBC (Playwright — BC provincial board)
+
+BC government employment portal (~28K listings). Many municipal and small employers post only here. JavaScript SPA — WebFetch returns an empty shell.
+
+**Search flow (Playwright):**
+1. `browser_navigate` to `https://www.workbc.ca/search-and-prepare-job/find-jobs`
+2. Take `browser_snapshot` to find the search form
+3. Fill keyword and location fields, submit
+4. Take `browser_snapshot` to extract results
+
 ### LinkedIn (WebSearch discovery)
 
 Use WebSearch with `site:linkedin.com/jobs` to find listings, then WebFetch individual URLs.
 
 ### General WebSearch (supplementary)
 
-Run broad queries without `site:` filters to catch listings from any board (WorkBC, ZipRecruiter, Glassdoor, company career pages). WebFetch promising individual listing URLs from results.
+Run broad queries without `site:` filters to catch listings from any board (ZipRecruiter, Glassdoor, company career pages). WebFetch promising individual listing URLs from results.
 
 ---
 
@@ -59,6 +87,18 @@ Run broad queries without `site:` filters to catch listings from any board (Work
 - `https://www.bcjobs.ca/search-jobs?q=painter&location=`
 - `https://www.bcjobs.ca/search-jobs?q=painting&location=`
 
+**Craigslist Comox Valley (WebFetch):**
+- `https://comoxvalley.craigslist.org/search/trd?query=painter`
+- `https://comoxvalley.craigslist.org/search/trd?query=painting`
+
+**Talent.com (WebFetch):**
+- `https://ca.talent.com/jobs?k=painter&l=Courtenay%2C+BC`
+- `https://ca.talent.com/jobs?k=painting+apprentice&l=British+Columbia`
+
+**WorkBC (Playwright):**
+- Search: `painter` location: `Courtenay`
+- Search: `painting apprentice` location: `British Columbia`
+
 **General WebSearch:**
 - `painter jobs Courtenay Comox Valley BC 2026`
 - `painting apprentice Vancouver Island BC hiring`
@@ -79,6 +119,18 @@ Run broad queries without `site:` filters to catch listings from any board (Work
 - `https://www.bcjobs.ca/search-jobs?q=construction+labourer&location=`
 - `https://www.bcjobs.ca/search-jobs?q=trades&location=`
 
+**Craigslist Comox Valley (WebFetch):**
+- `https://comoxvalley.craigslist.org/search/trd?query=construction`
+- `https://comoxvalley.craigslist.org/search/lab?query=labourer`
+
+**Talent.com (WebFetch):**
+- `https://ca.talent.com/jobs?k=construction+labourer&l=Courtenay%2C+BC`
+- `https://ca.talent.com/jobs?k=trades+helper&l=Courtenay%2C+BC`
+
+**WorkBC (Playwright):**
+- Search: `construction labourer` location: `Courtenay`
+- Search: `trades helper` location: `Courtenay`
+
 **General WebSearch:**
 - `construction labourer Courtenay Comox Valley BC 2026`
 - `trades helper Vancouver Island BC hiring`
@@ -95,6 +147,10 @@ Run broad queries without `site:` filters to catch listings from any board (Work
 - `https://ca.indeed.com/q-remote-junior-software-developer-jobs.html`
 - `https://ca.indeed.com/q-remote-technical-support-jobs.html`
 
+**Talent.com (WebFetch):**
+- `https://ca.talent.com/jobs?k=junior+developer&l=Canada&date=7`
+- `https://ca.talent.com/jobs?k=web+developer+remote&l=Canada&date=7`
+
 **LinkedIn (WebSearch):**
 - `site:linkedin.com/jobs "junior developer" Canada remote`
 - `site:linkedin.com/jobs "junior web developer" Canada remote`
@@ -108,6 +164,14 @@ Run broad queries without `site:` filters to catch listings from any board (Work
 **Indeed (WebFetch):**
 - `https://ca.indeed.com/q-facilities-maintenance-l-courtenay,-bc-jobs.html`
 - `https://ca.indeed.com/q-help-desk-l-remote-jobs.html`
+
+**Talent.com (WebFetch):**
+- `https://ca.talent.com/jobs?k=facilities+maintenance&l=Courtenay%2C+BC`
+- `https://ca.talent.com/jobs?k=maintenance+technician&l=Courtenay%2C+BC`
+
+**WorkBC (Playwright):**
+- Search: `maintenance` location: `Courtenay`
+- Search: `facilities maintenance` location: `Courtenay`
 
 ---
 
