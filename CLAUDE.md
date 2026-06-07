@@ -109,6 +109,7 @@ git checkout user/<firstname-lastname>
 - To onboard a new user: stay on `master`, create their branch, switch to it,
   then run `/setup`
 - **After completing any operation**, commit and push to the remote as the final step.
+- Use the `gh` CLI for all GitHub operations (viewing PRs, checking CI runs, creating issues): `gh pr list`, `gh run list`, etc.
 
 ## Repo Structure
 - `cv/` - LaTeX CV variants (moderncv template, banking style)
