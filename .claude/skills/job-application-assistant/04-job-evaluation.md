@@ -16,9 +16,9 @@ How well do the required/preferred skills align with the candidate's capabilitie
 | 40-59 | Partial match, significant upskilling needed |
 | 0-39 | Fundamental mismatch |
 
-**Strong match areas:** [YOUR_PRIMARY_SKILLS]
-**Moderate match areas:** [YOUR_SECONDARY_SKILLS]
-**Weak match areas:** [SKILLS_YOU_LACK]
+**Strong match areas:** Commercial painting, surface preparation, wood finishing, spray/roll/brush application, WHMIS, Fall Protection, customer service, cash handling
+**Moderate match areas:** Python, HTML5, web design, Git, Docker, Linux, DevOps, MySQL, CI/CD, graphic design
+**Weak match areas:** Advanced software engineering, cloud architecture, project management certifications, formal trades credentials (Red Seal in progress)
 
 ### 2. Experience Match (0-100)
 Does work history align with what they're looking for?
@@ -30,9 +30,9 @@ Does work history align with what they're looking for?
 | 40-59 | Adjacent experience, would need to make the case |
 | 0-39 | Unrelated experience |
 
-**Strong:** [YOUR_DIRECT_EXPERIENCE_DOMAINS]
-**Moderate:** [YOUR_ADJACENT_EXPERIENCE]
-**Entry-level:** [ROLES_WITH_LIMITED_EXPERIENCE]
+**Strong:** Commercial painting (~2 years), retail sales (~5 years), customer service, cash handling
+**Moderate:** Front desk/administrative, product display/visual merchandising, paint consulting
+**Entry-level:** Software development, DevOps, IT support (CS background + hobbyist experience)
 
 ### 3. Behavioral/Culture Fit (0-100)
 Does the role and company culture match the behavioral profile?
@@ -63,19 +63,19 @@ Does this role advance career goals and contain tasks that energize?
 | 0-39 | Dead end or backwards step |
 
 **Career goals:**
-- [YOUR_CAREER_GOAL_1]
-- [YOUR_CAREER_GOAL_2]
-- [YOUR_CAREER_GOAL_3]
+- Earn Red Seal certification as a painter
+- Build a stable career in the trades with steady, well-paying work
+- Keep remote tech roles as a secondary option leveraging CS background
 
 **Motivation filter:** Evaluate not just whether you *can* do the tasks, but whether the tasks will *energize* you. Consider:
-- Tasks that energize: [YOUR_ENERGIZING_TASKS]
-- Tasks that drain: [YOUR_DRAINING_TASKS]
+- Tasks that energize: Hands-on skilled work, seeing tangible results, working independently, progressive responsibility
+- Tasks that drain: Sales pressure, cold calling, commission-driven targets, heavy interpersonal persuasion
 - Non-task factors: leadership style, department culture, company values, degree of autonomy
 
 **Life situation alignment:** Consider personal constraints:
-- **Security**: [YOUR_FINANCIAL_SITUATION_CONTEXT]
-- **Flexibility**: [YOUR_SCHEDULE_CONSTRAINTS]
-- **Professional development**: [YOUR_GROWTH_PRIORITIES]
+- **Security**: Needs minimum $23/hr; currently employed so can be selective
+- **Flexibility**: Must be Comox Valley local or fully remote
+- **Professional development**: Red Seal apprenticeship is the priority; look for employers who support apprentice progression
 
 ### 6. Salary Benchmark (Optional)
 

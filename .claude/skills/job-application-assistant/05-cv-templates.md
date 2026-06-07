@@ -106,11 +106,11 @@ Write 5-7 lines that function as an "elevator pitch": a concise, compelling intr
 **Create 2-3 profile statement templates for your main role types:**
 
 <!-- SETUP: These are populated based on your background -->
-**For [YOUR_PRIMARY_ROLE_TYPE] roles:**
-> [YOUR_PROFILE_STATEMENT_TEMPLATE_1]
+**For Painting / Trades roles:**
+> Painter and decorator with approximately two years of commercial experience and a strong record of progressive responsibility. Holds WHMIS and Fall Protection certifications with Red Seal apprenticeship in progress. Known for working independently, co-leading crews, and consistently delivering quality workmanship with minimal supervision.
 
-**For [YOUR_SECONDARY_ROLE_TYPE] roles:**
-> [YOUR_PROFILE_STATEMENT_TEMPLATE_2]
+**For Technical / Remote roles:**
+> Technically proficient professional with a computer science background and hands-on experience in Python, Docker, Git, Linux, and web development. Combines analytical problem-solving with strong customer communication skills developed over years of client-facing roles. Self-directed worker who thrives with autonomy and clear objectives.
 
 ### Core Competencies / Skills Section (Best Practice)
 Reorder and emphasize based on the role. Use bold category labels.
