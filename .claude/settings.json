@@ -1,20 +1,30 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(bun *)",
+      "Bash(bunx *)",
+      "Bash(lualatex *)",
+      "Bash(xelatex *)",
+      "Bash(latexmk *)",
+      "Bash(find *)",
+      "Bash(ls *)"
+    ]
+  },
   "hooks": {
-    "PreToolUse": [
+    "PostToolUse": [
       {
         "matcher": "Write|Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "bash /Users/nick/ai-os/ai-job-search/.claude/hooks/block-env-edits.sh"
+            "command": "bash /Users/nick/ai-os/agent-skills/hooks/format-python.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash /Users/nick/ai-os/agent-skills/hooks/lint-python.sh"
           }
         ]
       }
-    ]
-  },
-  "permissions": {
-    "allow": [
-      "Bash(bash /Users/nick/ai-os/ai-job-search/.claude/hooks/*)"
     ]
   }
 }
